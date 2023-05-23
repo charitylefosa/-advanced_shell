@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
-
+#include <string.h>
 
 #define BUFFER_SIZE 1024
 
@@ -40,46 +40,40 @@ char *find_newline(void)
 char *extract_line(void)
 {
 	char *newline = find_newline();
+	size_t lineLength = 0;
 
 	if (newline != NULL)
 	{
 		lineLength = newline - &buffer[pos] + 1;
-		line = (char *)malloc(lineLength);
-		if (line == NULL)
+	}
+
+	else
+	{
+		lineLength - len - pos;
+	}
+
+	if (lineLength > 0)
 		{
+			line = (char *)malloc(lineLength + 1);
+			if (line == NULL)
+			{
 			return (NULL);
 		}
-		for (i = pos; i < pos + lineLength - 1; i++)
+		for (i = 0; i < lineLength; i++)
 		{
-			line[i - pos] = buffer[i];
+			line[i] = buffer[pos + i];
 		}
-		line[lineLength - 1] = '\0';
+		line[lineLength] = '\0';
 		pos += lineLength;
 		return (line);
 	}
-	else
-	{
-		lineLength = len - pos;
-		line = (char *)malloc(lineLength + 1);
-		if (line == NULL)
-		{
-			return (NULL);
-		}
-		for (i = pos; i < len; i++)
-		{
-			line[i - pos] = buffer[i];
-		}
-		line[lineLength] = '\0';
-		pos = len;
-		return (line);
-	}
+	return NULL;
 }
-
 char *my_getline(void)
 {
 	if (pos >= len)
 	{
-		ssize_t bytesRead;
+		$size_t bytesRead;
 
 		bytesRead = read_buffer();
 		if (bytesRead <= 0)
@@ -87,13 +81,18 @@ char *my_getline(void)
 			return (NULL);
 		}
 	}
-	return (extract_line());
+	return extract_line();
 }
 
-
-int main(void)
+int main(int argc, char *argv[])
 {
 	char *line;
+
+	if (argc > 1)
+	{
+		printf("Argument %d: %$\n", i, argv[i]);
+	}
+}
 
 	while ((line = my_getline()) != NULL)
 	{
